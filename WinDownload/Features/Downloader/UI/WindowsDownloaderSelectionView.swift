@@ -229,20 +229,7 @@ public struct WindowsDownloaderSelectionView: View {
 
                 Divider()
 
-                // Info 5: Download Source
-                infoRow(icon: "checkmark.shield.fill", iconColor: .green, label: "Source") {
-                    HStack(spacing: 6) {
-                        Text("Official Microsoft CDN")
-                            .font(.subheadline.weight(.medium))
-                        Text("(Direct & Untouched)")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                Divider()
-
-                // Info 6: Destination Folder
+                // Info 5: Destination Folder
                 infoRow(icon: "folder.fill", iconColor: .orange, label: "Save To") {
                     HStack {
                         Text(coordinator.destinationDirectory.path)

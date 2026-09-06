@@ -4,7 +4,7 @@ public enum WindowsCategory: String, CaseIterable, Identifiable, Codable {
     case windows11 = "Windows 11"
     case windows10 = "Windows 10"
     case windowsServer = "Windows Server"
-    case windows8 = "Windows 8.1"
+    case windows8 = "Windows 8"
 
     public static let legacy: WindowsCategory = .windows8
 

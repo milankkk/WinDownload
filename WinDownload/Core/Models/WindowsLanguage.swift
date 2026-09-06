@@ -12,21 +12,41 @@ public struct WindowsLanguage: Identifiable, Hashable, Codable {
     }
 
     public var displayName: String {
-        if localizedName.isEmpty || localizedName == englishName {
-            return englishName
+        let eng = englishName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let loc = localizedName.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Handle English variants
+        if eng.localizedCaseInsensitiveContains("English") {
+            if eng.localizedCaseInsensitiveContains("International") || loc.localizedCaseInsensitiveContains("International") || loc.localizedCaseInsensitiveContains("Kingdom") {
+                return "English (International)"
+            }
+            return "English (US)"
         }
-        return "\(englishName) (\(localizedName))"
+
+        // Handle Chinese variants
+        if eng.localizedCaseInsensitiveContains("Chinese") || loc.localizedCaseInsensitiveContains("Chinese") {
+            if eng.localizedCaseInsensitiveContains("Traditional") || loc.localizedCaseInsensitiveContains("Traditional") || loc.contains("繁體") {
+                return "Chinese (Traditional)"
+            }
+            return "Chinese (Simplified)"
+        }
+
+        if loc.isEmpty || loc == eng || loc.localizedCaseInsensitiveContains(eng) {
+            return eng
+        }
+
+        return "\(eng) (\(loc))"
     }
 
     public static let fallbackEnglish = WindowsLanguage(
         id: "19672",
-        englishName: "English",
-        localizedName: "English"
+        englishName: "English (US)",
+        localizedName: "English (US)"
     )
 
     public static let defaultList: [WindowsLanguage] = [
-        WindowsLanguage(id: "19672", englishName: "English", localizedName: "English"),
-        WindowsLanguage(id: "19673", englishName: "English International", localizedName: "English International"),
+        WindowsLanguage(id: "19672", englishName: "English (US)", localizedName: "English (US)"),
+        WindowsLanguage(id: "19673", englishName: "English (International)", localizedName: "English (International)"),
         WindowsLanguage(id: "19688", englishName: "Polish", localizedName: "Polski"),
         WindowsLanguage(id: "19676", englishName: "German", localizedName: "Deutsch"),
         WindowsLanguage(id: "19674", englishName: "French", localizedName: "Français"),

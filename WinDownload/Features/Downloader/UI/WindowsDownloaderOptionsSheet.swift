@@ -50,9 +50,13 @@ public struct WindowsDownloaderOptionsSheet: View {
                 Divider()
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Connection Strategy")
-                        .font(.body.weight(.medium))
-                    Text("WinDownload connects directly to Microsoft's official CDN infrastructure, using MSDL's distributed cache as an automatic fallback.")
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.shield.fill")
+                            .foregroundStyle(.green)
+                        Text("Official Microsoft Direct CDN")
+                            .font(.body.weight(.medium))
+                    }
+                    Text("WinDownload downloads official, untouched Windows disk images directly from Microsoft's content delivery network, using MSDL's distributed cache as an automatic fallback.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
