@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		WD0001 /* WinDownloadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1001 /* WinDownloadApp.swift */; };
+		WD0002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1002 /* ContentView.swift */; };
+		WD0003 /* WindowsProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1003 /* WindowsProduct.swift */; };
+		WD0004 /* WindowsLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1004 /* WindowsLanguage.swift */; };
+		WD0005 /* WindowsArchitecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1005 /* WindowsArchitecture.swift */; };
+		WD0006 /* DownloadTaskState.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1006 /* DownloadTaskState.swift */; };
+		WD0007 /* WindowsCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1007 /* WindowsCatalog.swift */; };
+		WD0008 /* MicrosoftSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1008 /* MicrosoftSessionClient.swift */; };
+		WD0009 /* MSDLAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1009 /* MSDLAPIClient.swift */; };
+		WD0010 /* EvaluationScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1010 /* EvaluationScraper.swift */; };
+		WD0011 /* WindowsISOResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1011 /* WindowsISOResolver.swift */; };
+		WD0012 /* FileDownloadDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1012 /* FileDownloadDelegate.swift */; };
+		WD0013 /* ChecksumCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1013 /* ChecksumCalculator.swift */; };
+		WD0014 /* WindowsDownloadEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1014 /* WindowsDownloadEngine.swift */; };
+		WD0015 /* DiskSpaceUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1015 /* DiskSpaceUtility.swift */; };
+		WD0016 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1016 /* NotificationsManager.swift */; };
+		WD0017 /* MacUSBHandoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1017 /* MacUSBHandoff.swift */; };
+		WD0018 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1018 /* DesignTokens.swift */; };
+		WD0019 /* LiquidGlassCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1019 /* LiquidGlassCompatibility.swift */; };
+		WD0020 /* StatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1020 /* StatusCard.swift */; };
+		WD0021 /* BottomActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1021 /* BottomActionBar.swift */; };
+		WD0022 /* WindowsDownloaderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1022 /* WindowsDownloaderCoordinator.swift */; };
+		WD0023 /* WindowsDownloaderSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1023 /* WindowsDownloaderSelectionView.swift */; };
+		WD0024 /* WindowsDownloaderProcessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1024 /* WindowsDownloaderProcessView.swift */; };
+		WD0025 /* WindowsDownloaderSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1025 /* WindowsDownloaderSummaryView.swift */; };
+		WD0026 /* WindowsDownloaderOptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = WD1026 /* WindowsDownloaderOptionsSheet.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		WD1000 /* WinDownload.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WinDownload.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		WD1001 /* WinDownloadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinDownloadApp.swift; sourceTree = "<group>"; };
+		WD1002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		WD1003 /* WindowsProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsProduct.swift; sourceTree = "<group>"; };
+		WD1004 /* WindowsLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsLanguage.swift; sourceTree = "<group>"; };
+		WD1005 /* WindowsArchitecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsArchitecture.swift; sourceTree = "<group>"; };
+		WD1006 /* DownloadTaskState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTaskState.swift; sourceTree = "<group>"; };
+		WD1007 /* WindowsCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsCatalog.swift; sourceTree = "<group>"; };
+		WD1008 /* MicrosoftSessionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftSessionClient.swift; sourceTree = "<group>"; };
+		WD1009 /* MSDLAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSDLAPIClient.swift; sourceTree = "<group>"; };
+		WD1010 /* EvaluationScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationScraper.swift; sourceTree = "<group>"; };
+		WD1011 /* WindowsISOResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsISOResolver.swift; sourceTree = "<group>"; };
+		WD1012 /* FileDownloadDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadDelegate.swift; sourceTree = "<group>"; };
+		WD1013 /* ChecksumCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumCalculator.swift; sourceTree = "<group>"; };
+		WD1014 /* WindowsDownloadEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsDownloadEngine.swift; sourceTree = "<group>"; };
+		WD1015 /* DiskSpaceUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskSpaceUtility.swift; sourceTree = "<group>"; };
+		WD1016 /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
+		WD1017 /* MacUSBHandoff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacUSBHandoff.swift; sourceTree = "<group>"; };
+		WD1018 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
+		WD1019 /* LiquidGlassCompatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassCompatibility.swift; sourceTree = "<group>"; };
+		WD1020 /* StatusCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCard.swift; sourceTree = "<group>"; };
+		WD1021 /* BottomActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionBar.swift; sourceTree = "<group>"; };
+		WD1022 /* WindowsDownloaderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsDownloaderCoordinator.swift; sourceTree = "<group>"; };
+		WD1023 /* WindowsDownloaderSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsDownloaderSelectionView.swift; sourceTree = "<group>"; };
+		WD1024 /* WindowsDownloaderProcessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsDownloaderProcessView.swift; sourceTree = "<group>"; };
+		WD1025 /* WindowsDownloaderSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsDownloaderSummaryView.swift; sourceTree = "<group>"; };
+		WD1026 /* WindowsDownloaderOptionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsDownloaderOptionsSheet.swift; sourceTree = "<group>"; };
+		WD1027 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		WD1028 /* WinDownload.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WinDownload.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		WD2001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		WD3001 = {
+			isa = PBXGroup;
+			children = (
+				WD3002 /* WinDownload */,
+				WD3009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		WD3002 /* WinDownload */ = {
+			isa = PBXGroup;
+			children = (
+				WD3003 /* App */,
+				WD3004 /* Core */,
+				WD3005 /* Shared */,
+				WD3006 /* Features */,
+			);
+			path = WinDownload;
+			sourceTree = "<group>";
+		};
+		WD3003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				WD1001 /* WinDownloadApp.swift */,
+				WD1002 /* ContentView.swift */,
+				WD1027 /* Info.plist */,
+				WD1028 /* WinDownload.entitlements */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		WD3004 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				WD3007 /* Models */,
+				WD3008 /* Network */,
+				WD3010 /* Download */,
+				WD3011 /* Utils */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		WD3007 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				WD1003 /* WindowsProduct.swift */,
+				WD1004 /* WindowsLanguage.swift */,
+				WD1005 /* WindowsArchitecture.swift */,
+				WD1006 /* DownloadTaskState.swift */,
+				WD1007 /* WindowsCatalog.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		WD3008 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				WD1008 /* MicrosoftSessionClient.swift */,
+				WD1009 /* MSDLAPIClient.swift */,
+				WD1010 /* EvaluationScraper.swift */,
+				WD1011 /* WindowsISOResolver.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		WD3010 /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				WD1012 /* FileDownloadDelegate.swift */,
+				WD1013 /* ChecksumCalculator.swift */,
+				WD1014 /* WindowsDownloadEngine.swift */,
+			);
+			path = Download;
+			sourceTree = "<group>";
+		};
+		WD3011 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				WD1015 /* DiskSpaceUtility.swift */,
+				WD1016 /* NotificationsManager.swift */,
+				WD1017 /* MacUSBHandoff.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		WD3005 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				WD3012 /* UI */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		WD3012 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				WD1018 /* DesignTokens.swift */,
+				WD1019 /* LiquidGlassCompatibility.swift */,
+				WD1020 /* StatusCard.swift */,
+				WD1021 /* BottomActionBar.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		WD3006 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				WD3013 /* Downloader */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		WD3013 /* Downloader */ = {
+			isa = PBXGroup;
+			children = (
+				WD3014 /* Coordinator */,
+				WD3015 /* UI */,
+			);
+			path = Downloader;
+			sourceTree = "<group>";
+		};
+		WD3014 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				WD1022 /* WindowsDownloaderCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		WD3015 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				WD1023 /* WindowsDownloaderSelectionView.swift */,
+				WD1024 /* WindowsDownloaderProcessView.swift */,
+				WD1025 /* WindowsDownloaderSummaryView.swift */,
+				WD1026 /* WindowsDownloaderOptionsSheet.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		WD3009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				WD1000 /* WinDownload.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		WD4001 /* WinDownload */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = WD5001 /* Build configuration list for PBXNativeTarget "WinDownload" */;
+			buildPhases = (
+				WD2002 /* Sources */,
+				WD2001 /* Frameworks */,
+				WD2003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WinDownload;
+			productName = WinDownload;
+			productReference = WD1000 /* WinDownload.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		WD6001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					WD4001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = WD5002 /* Build configuration list for PBXProject "WinDownload" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = WD3001;
+			productRefGroup = WD3009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				WD4001 /* WinDownload */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		WD2003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		WD2002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				WD0001 /* WinDownloadApp.swift in Sources */,
+				WD0002 /* ContentView.swift in Sources */,
+				WD0003 /* WindowsProduct.swift in Sources */,
+				WD0004 /* WindowsLanguage.swift in Sources */,
+				WD0005 /* WindowsArchitecture.swift in Sources */,
+				WD0006 /* DownloadTaskState.swift in Sources */,
+				WD0007 /* WindowsCatalog.swift in Sources */,
+				WD0008 /* MicrosoftSessionClient.swift in Sources */,
+				WD0009 /* MSDLAPIClient.swift in Sources */,
+				WD0010 /* EvaluationScraper.swift in Sources */,
+				WD0011 /* WindowsISOResolver.swift in Sources */,
+				WD0012 /* FileDownloadDelegate.swift in Sources */,
+				WD0013 /* ChecksumCalculator.swift in Sources */,
+				WD0014 /* WindowsDownloadEngine.swift in Sources */,
+				WD0015 /* DiskSpaceUtility.swift in Sources */,
+				WD0016 /* NotificationsManager.swift in Sources */,
+				WD0017 /* MacUSBHandoff.swift in Sources */,
+				WD0018 /* DesignTokens.swift in Sources */,
+				WD0019 /* LiquidGlassCompatibility.swift in Sources */,
+				WD0020 /* StatusCard.swift in Sources */,
+				WD0021 /* BottomActionBar.swift in Sources */,
+				WD0022 /* WindowsDownloaderCoordinator.swift in Sources */,
+				WD0023 /* WindowsDownloaderSelectionView.swift in Sources */,
+				WD0024 /* WindowsDownloaderProcessView.swift in Sources */,
+				WD0025 /* WindowsDownloaderSummaryView.swift in Sources */,
+				WD0026 /* WindowsDownloaderOptionsSheet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		WD7001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDEFINED_CARRIER = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		WD7002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDEFINED_CARRIER = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		WD7003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WinDownload/App/WinDownload.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WinDownload/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruszoneq.windownload;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		WD7004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WinDownload/App/WinDownload.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WinDownload/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruszoneq.windownload;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		WD5001 /* Build configuration list for PBXNativeTarget "WinDownload" */;
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				WD7003 /* Debug */,
+				WD7004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		WD5002 /* Build configuration list for PBXProject "WinDownload" */;
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				WD7001 /* Debug */,
+				WD7002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = WD6001 /* Project object */;
+}
