@@ -127,6 +127,22 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		400000000000000000000006 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				400000000000000000000012 /* UI */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		400000000000000000000007 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				400000000000000000000013 /* Downloader */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
 		400000000000000000000008 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,14 +186,6 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		400000000000000000000006 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				400000000000000000000012 /* UI */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		400000000000000000000012 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,14 +195,6 @@
 				200000000000000000000023 /* BottomActionBar.swift */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		400000000000000000000007 /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				400000000000000000000013 /* Downloader */,
-			);
-			path = Features;
 			sourceTree = "<group>";
 		};
 		400000000000000000000013 /* Downloader */ = {
@@ -398,7 +398,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kruszoneq.windownload;
+				PRODUCT_BUNDLE_IDENTIFIER = com.milankkk.windownload;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -421,7 +421,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kruszoneq.windownload;
+				PRODUCT_BUNDLE_IDENTIFIER = com.milankkk.windownload;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

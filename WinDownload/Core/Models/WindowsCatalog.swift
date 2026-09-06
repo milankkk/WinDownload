@@ -7,11 +7,11 @@ public struct WindowsCatalog {
 
     public init() {
         self.allProducts = [
-            // Windows 11 24H2 (Primary Recommended)
+            // --- Windows 11 ---
             WindowsProduct(
                 id: "3113",
-                name: "Windows 11 24H2",
-                editionName: "Windows 11 24H2 (Home / Pro)",
+                name: "Windows 11 Home / Pro (24H2)",
+                editionName: "Home / Pro (24H2)",
                 build: "Build 26100.1742",
                 category: .windows11,
                 badge: .stable,
@@ -21,21 +21,19 @@ public struct WindowsCatalog {
             ),
             WindowsProduct(
                 id: "3131",
-                name: "Windows 11 Arm64 24H2",
-                editionName: "Windows 11 Arm64 24H2",
+                name: "Windows 11 Home / Pro (24H2) ARM64",
+                editionName: "Home / Pro (24H2) ARM64",
                 build: "Build 26100.1742",
                 category: .windows11,
                 badge: .arm64,
                 architectures: [.arm64],
                 relatedIDs: ["3113", "3265"]
             ),
-
-            // Windows 11 Enterprise LTSC 2024
             WindowsProduct(
                 id: "win11-ent-ltsc-2024",
-                name: "Windows 11 Enterprise LTSC 2024",
-                editionName: "Enterprise LTSC 2024",
-                build: "Build 26100.1742 (LTSC)",
+                name: "Windows 11 Enterprise LTSC (2024)",
+                editionName: "Enterprise LTSC (2024)",
+                build: "Build 26100.1742",
                 category: .windows11,
                 badge: .ltsc,
                 architectures: [.x64],
@@ -44,44 +42,10 @@ public struct WindowsCatalog {
                 evalURL: "https://go.microsoft.com/fwlink/?linkid=2289029",
                 relatedIDs: ["3113", "win11-ent"]
             ),
-
-            // Windows 11 25H2
-            WindowsProduct(
-                id: "3262",
-                name: "Windows 11 25H2",
-                editionName: "Windows 11 25H2 (Insider / Preview)",
-                build: "Build 26200.6584",
-                category: .windows11,
-                badge: .latest,
-                architectures: [.x64],
-                relatedIDs: ["3113", "3321"]
-            ),
-            WindowsProduct(
-                id: "3321",
-                name: "Windows 11 25H2 (V2)",
-                editionName: "Windows 11 25H2 (V2)",
-                build: "Build 26200 Refresh",
-                category: .windows11,
-                badge: .latest,
-                architectures: [.x64],
-                relatedIDs: ["3262", "3324"]
-            ),
-            WindowsProduct(
-                id: "3324",
-                name: "Windows 11 Arm64 25H2 (V2)",
-                editionName: "Windows 11 Arm64 25H2 (V2)",
-                build: "Build 26200 Refresh",
-                category: .windows11,
-                badge: .latest,
-                architectures: [.arm64],
-                relatedIDs: ["3321", "3265"]
-            ),
-
-            // Windows 11 Enterprise (Annual)
             WindowsProduct(
                 id: "win11-ent",
-                name: "Windows 11 Enterprise",
-                editionName: "Enterprise (24H2 Evaluation)",
+                name: "Windows 11 Enterprise (24H2)",
+                editionName: "Enterprise (24H2)",
                 build: "Build 26100",
                 category: .windows11,
                 badge: .eval,
@@ -90,36 +54,62 @@ public struct WindowsCatalog {
                 directISOURL: "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1742.240906-0331.ge_release_svc_refresh_CLIENTENTERPRISE_S_EVAL_x64FRE_en-us.iso",
                 evalURL: "https://go.microsoft.com/fwlink/?linkid=2334167"
             ),
-
-            // Windows 11 China
+            WindowsProduct(
+                id: "3262",
+                name: "Windows 11 Insider Preview (25H2)",
+                editionName: "Insider Preview (25H2)",
+                build: "Build 26200.6584",
+                category: .windows11,
+                badge: .latest,
+                architectures: [.x64],
+                relatedIDs: ["3113", "3321"]
+            ),
+            WindowsProduct(
+                id: "3321",
+                name: "Windows 11 Insider Preview (25H2 V2)",
+                editionName: "Insider Preview (25H2 V2)",
+                build: "Build 26200 Refresh",
+                category: .windows11,
+                badge: .latest,
+                architectures: [.x64],
+                relatedIDs: ["3262", "3324"]
+            ),
+            WindowsProduct(
+                id: "3324",
+                name: "Windows 11 Insider Preview (25H2 V2) ARM64",
+                editionName: "Insider Preview (25H2 V2) ARM64",
+                build: "Build 26200 Refresh",
+                category: .windows11,
+                badge: .latest,
+                architectures: [.arm64],
+                relatedIDs: ["3321", "3265"]
+            ),
             WindowsProduct(
                 id: "3263",
-                name: "Windows 11 25H2 Home China",
-                editionName: "Windows 11 25H2 Home (China)",
+                name: "Windows 11 Home China (25H2)",
+                editionName: "Home China (25H2)",
                 build: "Build 26200.6584",
                 category: .windows11,
                 badge: .latest,
                 architectures: [.x64]
             ),
 
-            // Windows 10 22H2
+            // --- Windows 10 ---
             WindowsProduct(
                 id: "2618",
-                name: "Windows 10 22H2",
-                editionName: "Windows 10 22H2 (Home / Pro)",
+                name: "Windows 10 Home / Pro (22H2)",
+                editionName: "Home / Pro (22H2)",
                 build: "Build 19045.2965",
                 category: .windows10,
                 badge: .stable,
                 architectures: [.x64, .x86],
                 relatedIDs: ["3113", "win10-ent-ltsc-2021"]
             ),
-
-            // Windows 10 Enterprise LTSC 2021
             WindowsProduct(
                 id: "win10-ent-ltsc-2021",
-                name: "Windows 10 Enterprise LTSC 2021",
-                editionName: "Enterprise LTSC 2021",
-                build: "Build 19044.1288 (LTSC)",
+                name: "Windows 10 Enterprise LTSC (2021)",
+                editionName: "Enterprise LTSC (2021)",
+                build: "Build 19044.1288",
                 category: .windows10,
                 badge: .ltsc,
                 architectures: [.x64],
@@ -128,23 +118,21 @@ public struct WindowsCatalog {
                 evalURL: "https://go.microsoft.com/fwlink/p/?LinkID=2195404",
                 relatedIDs: ["2618"]
             ),
-
-            // Windows 10 China
             WindowsProduct(
                 id: "2378",
-                name: "Windows 10 22H2 Home China",
-                editionName: "Windows 10 22H2 Home (China)",
+                name: "Windows 10 Home China (22H2)",
+                editionName: "Home China (22H2)",
                 build: "Build 19045.2006",
                 category: .windows10,
                 badge: .eol,
                 architectures: [.x64]
             ),
 
-            // Windows Server 2025
+            // --- Windows Server ---
             WindowsProduct(
                 id: "server-2025",
                 name: "Windows Server 2025",
-                editionName: "Windows Server 2025",
+                editionName: "2025",
                 build: "Build 26100",
                 category: .windowsServer,
                 badge: .server,
@@ -153,12 +141,10 @@ public struct WindowsCatalog {
                 directISOURL: "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1742.240906-0331.ge_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso",
                 evalURL: "https://go.microsoft.com/fwlink/p/?linkid=2289945"
             ),
-
-            // Windows Server 2022
             WindowsProduct(
                 id: "server-2022",
                 name: "Windows Server 2022",
-                editionName: "Windows Server 2022",
+                editionName: "2022",
                 build: "Build 20348",
                 category: .windowsServer,
                 badge: .server,
@@ -167,12 +153,10 @@ public struct WindowsCatalog {
                 directISOURL: "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso",
                 evalURL: "https://go.microsoft.com/fwlink/p/?LinkID=2195280"
             ),
-
-            // Windows Server 2019
             WindowsProduct(
                 id: "server-2019",
                 name: "Windows Server 2019",
-                editionName: "Windows Server 2019",
+                editionName: "2019",
                 build: "Build 17763",
                 category: .windowsServer,
                 badge: .server,
@@ -181,12 +165,10 @@ public struct WindowsCatalog {
                 directISOURL: "https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66749/17763.3650.221105-1748.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso",
                 evalURL: "https://go.microsoft.com/fwlink/p/?LinkID=2195167"
             ),
-
-            // Windows Server 2016
             WindowsProduct(
                 id: "server-2016",
                 name: "Windows Server 2016",
-                editionName: "Windows Server 2016",
+                editionName: "2016",
                 build: "Build 14393",
                 category: .windowsServer,
                 badge: .server,
@@ -195,11 +177,11 @@ public struct WindowsCatalog {
                 evalURL: "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2016"
             ),
 
-            // Windows 8.1
+            // --- Windows 8 ---
             WindowsProduct(
                 id: "52",
                 name: "Windows 8.1",
-                editionName: "Windows 8.1 (Pro / Core)",
+                editionName: "8.1 (Pro / Core)",
                 build: "Build 9600.17415",
                 category: .windows8,
                 badge: .legacy,

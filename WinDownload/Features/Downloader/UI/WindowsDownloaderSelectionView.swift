@@ -26,10 +26,10 @@ public struct WindowsDownloaderSelectionView: View {
             BottomActionBar {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(coordinator.selectedProduct.editionName)
+                        Text(coordinator.selectedProduct.name)
                             .font(.subheadline.weight(.semibold))
                             .lineLimit(1)
-                        Text("\(coordinator.selectedArchitecture.shortName) • \(coordinator.selectedLanguage.englishName)")
+                        Text("\(coordinator.selectedArchitecture.shortName) • \(coordinator.selectedLanguage.displayName)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
