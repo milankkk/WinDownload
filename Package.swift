@@ -27,12 +27,7 @@ let package = Package(
             name: "WinDownload",
             dependencies: ["WinDownloadCore"],
             path: "WinDownload",
-            exclude: ["Core", "App/Info.plist", "App/WinDownload.entitlements"],
-            sources: [
-                "App",
-                "Shared",
-                "Features"
-            ]
+            exclude: ["Core", "App/Info.plist", "App/WinDownload.entitlements"]
         ),
         .testTarget(
             name: "WinDownloadTests",
