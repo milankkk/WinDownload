@@ -1,5 +1,7 @@
 # WinDownload
 
+![WinDownload Screenshot](docs/example.png)
+
 [![Download Nightly DMG](https://img.shields.io/badge/Download-Nightly%20DMG-blue?logo=apple)](https://github.com/milankkk/WinDownload/releases/download/nightly/WinDownload.dmg)
 
 A native macOS application to download official Windows ISOs directly from Microsoft.
