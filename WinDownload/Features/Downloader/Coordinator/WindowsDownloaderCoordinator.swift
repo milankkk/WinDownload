@@ -102,16 +102,19 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         return availableEditions
     }
 
+    /// Re-calculates available disk space at the destination directory.
     public func refreshDiskSpace() {
         self.availableDiskSpaceText = DiskSpaceUtility.formattedAvailableSpace(at: destinationDirectory)
         self.hasLowDiskSpaceWarning = !DiskSpaceUtility.hasSufficientSpace(at: destinationDirectory)
     }
 
+    /// Updates the destination download directory and refreshes free disk space.
     public func setDestinationDirectory(_ url: URL) {
         self.destinationDirectory = url
         refreshDiskSpace()
     }
 
+    /// Ensures the selected architecture is valid for the current product.
     private func updateArchitectureForSelectedProduct() {
         let supported = availableArchitectures
         if !supported.contains(selectedArchitecture) {
@@ -123,6 +126,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         }
     }
 
+    /// Fetches official language SKUs for the selected product and architecture.
     public func loadLanguagesForSelectedProduct() {
         isLoadingLanguages = true
         languageError = nil
@@ -149,6 +153,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         }
     }
 
+    /// Resolves the download link and starts the download engine.
     public func startDownloadWorkflow() {
         isResolvingLink = true
         resolutionError = nil
@@ -177,10 +182,12 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         }
     }
 
+    /// Pauses the ongoing download.
     public func pauseDownload() {
         downloadEngine.pause()
     }
 
+    /// Resumes a paused download.
     public func resumeDownload() {
         guard let option = activeResolvedOption else { return }
         downloadEngine.resume(
@@ -189,6 +196,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         )
     }
 
+    /// Cancels the active download and returns to the selection screen.
     public func cancelDownload() {
         downloadEngine.cancel()
         currentScreen = .selection
@@ -196,6 +204,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         isResolvingLink = false
     }
 
+    /// Resets the downloader engine and returns to the selection screen.
     public func returnToSelection() {
         downloadEngine.reset()
         currentScreen = .selection
@@ -204,6 +213,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         refreshDiskSpace()
     }
 
+    /// Subscribes to download engine state changes and completion notifications.
     private func setupEngineSubscriptions() {
         downloadEngine.objectWillChange
             .receive(on: DispatchQueue.main)

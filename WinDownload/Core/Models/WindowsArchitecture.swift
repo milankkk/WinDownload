@@ -15,6 +15,7 @@ public enum WindowsArchitecture: String, CaseIterable, Identifiable, Codable {
         }
     }
 
+    /// Returns the user-facing architecture label, including ISA details when expert mode is active.
     public func displayName(expertMode: Bool) -> String {
         if expertMode {
             switch self {
@@ -30,6 +31,7 @@ public enum WindowsArchitecture: String, CaseIterable, Identifiable, Codable {
         rawValue
     }
 
+    /// Infers the CPU architecture from a file name or description string.
     public static func from(string: String) -> WindowsArchitecture {
         let lower = string.lowercased()
         if lower.contains("arm64") || lower.contains("aarch64") {

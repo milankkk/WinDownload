@@ -21,6 +21,7 @@ public final class FileDownloadDelegate: NSObject, URLSessionDownloadDelegate {
         self.progressHandler = progressHandler
     }
 
+    /// Resumes the download task and awaits completion, returning the destination file URL.
     public func awaitCompletion(task: URLSessionDownloadTask) async throws -> URL {
         return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
@@ -31,6 +32,7 @@ public final class FileDownloadDelegate: NSObject, URLSessionDownloadDelegate {
         }
     }
 
+    /// Receives incremental download progress updates and computes speed and ETA.
     public func urlSession(
         _ session: URLSession,
         downloadTask: URLSessionDownloadTask,
@@ -69,6 +71,7 @@ public final class FileDownloadDelegate: NSObject, URLSessionDownloadDelegate {
         progressHandler(totalBytesWritten, expected, currentSpeedMBps, eta)
     }
 
+    /// Moves the downloaded temporary file to its final destination directory.
     public func urlSession(
         _ session: URLSession,
         downloadTask: URLSessionDownloadTask,
@@ -94,6 +97,7 @@ public final class FileDownloadDelegate: NSObject, URLSessionDownloadDelegate {
         }
     }
 
+    /// Handles download task network failure or completion error.
     public func urlSession(
         _ session: URLSession,
         task: URLSessionTask,

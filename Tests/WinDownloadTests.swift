@@ -2,6 +2,7 @@ import XCTest
 @testable import WinDownloadCore
 
 final class WinDownloadTests: XCTestCase {
+    /// Verifies that all top-level categories have available catalog items.
     func testCatalogHasAllCategories() {
         let catalog = WindowsCatalog.shared
         for category in WindowsCategory.allCases {
@@ -10,6 +11,7 @@ final class WinDownloadTests: XCTestCase {
         }
     }
 
+    /// Verifies looking up a product by its unique product ID.
     func testProductLookupByID() {
         let catalog = WindowsCatalog.shared
         let win11 = catalog.findProduct(id: "3262")
@@ -18,6 +20,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertEqual(win11?.badge, .latest)
     }
 
+    /// Verifies catalog text search query matching.
     func testProductSearch() {
         let catalog = WindowsCatalog.shared
         let results = catalog.search(query: "server 2025")
@@ -25,12 +28,14 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertEqual(results.first?.id, "server-2025")
     }
 
+    /// Verifies string-based architecture inference.
     func testArchitectureDetection() {
         XCTAssertEqual(WindowsArchitecture.from(string: "Win11_24H2_Arm64.iso"), .arm64)
         XCTAssertEqual(WindowsArchitecture.from(string: "Win11_25H2_x64.iso"), .x64)
         XCTAssertEqual(WindowsArchitecture.from(string: "Win10_22H2_x86.iso"), .x86)
     }
 
+    /// Verifies formatting of speed, transferred bytes, and time remaining.
     func testProgressMetricsFormatting() {
         var metrics = DownloadProgressMetrics()
         metrics.bytesDownloaded = 2_147_483_648 // 2 GB
@@ -44,6 +49,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertEqual(metrics.formattedTimeRemaining, "1m 24s remaining")
     }
 
+    /// Verifies filename extraction from query-string URIs.
     func testResolvedDownloadOptionFileNameExtraction() {
         let opt = ResolvedDownloadOption(
             uri: "https://software.download.prss.microsoft.com/dbazure/Win11_25H2_English_x64.iso?t=12345",
@@ -52,6 +58,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertEqual(opt.fileName, "Win11_25H2_English_x64.iso")
     }
 
+    /// Verifies live language and download link resolution against Microsoft APIs.
     func testLiveResolution() async throws {
         let product = WindowsCatalog.shared.allProducts[0]
         print("Testing product: \(product.name) (ID: \(product.id))")
@@ -68,6 +75,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertFalse(opt.uri.isEmpty)
     }
 
+    /// Tests download engine network streaming, progress reporting, and cancellation.
     @MainActor
     func testDownloadEngineExecution() async throws {
         let engine = WindowsDownloadEngine()
@@ -94,6 +102,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertTrue(sawProgress, "Engine should receive bytes")
     }
 
+    /// Verifies availability of LTSC editions in Windows 10 and 11 catalogs.
     func testCatalogEditionsAndLTSC() {
         let catalog = WindowsCatalog.shared
         let win11Editions = catalog.editions(for: .windows11)
@@ -107,6 +116,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertEqual(win11LTSC?.badge, .ltsc)
     }
 
+    /// Verifies direct URL resolution for Enterprise LTSC evaluation ISOs.
     func testLTSCResolution() async throws {
         guard let win11LTSC = WindowsCatalog.shared.findProduct(id: "win11-ent-ltsc-2024") else {
             XCTFail("Missing win11-ent-ltsc-2024 product")
@@ -121,6 +131,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertEqual(option.architecture, .x64)
     }
 
+    /// Verifies newly added regional China and preview SKUs and dynamic architecture mapping.
     func testNewProductsAndArchitectureResolution() {
         let catalog = WindowsCatalog.shared
 
@@ -167,6 +178,7 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertTrue(win11Editions.contains(where: { $0.id == "3321" }))
     }
 
+    /// Verifies clean and expert architecture display string formats.
     func testArchitectureDisplayModes() {
         XCTAssertEqual(WindowsArchitecture.arm64.displayName, "ARM64")
         XCTAssertEqual(WindowsArchitecture.x64.displayName, "64-bit (x64)")

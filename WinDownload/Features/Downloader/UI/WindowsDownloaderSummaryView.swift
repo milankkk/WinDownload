@@ -200,6 +200,7 @@ public struct WindowsDownloaderSummaryView: View {
         }
     }
 
+    /// Copies the provided text to the macOS system pasteboard.
     private func copyToClipboard(text: String) {
         #if canImport(AppKit)
         let pasteboard = NSPasteboard.general

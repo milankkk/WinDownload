@@ -7,6 +7,7 @@ public actor WindowsISOResolver {
 
     public init() {}
 
+    /// Resolves available languages for a product, falling back to MSDL API cache if direct Microsoft session fails.
     public func resolveLanguages(for product: WindowsProduct) async throws -> [WindowsLanguage] {
         if product.isEvaluation {
             // Evaluation ISOs are multilingual or have bundled language
@@ -38,6 +39,7 @@ public actor WindowsISOResolver {
         return WindowsLanguage.defaultList
     }
 
+    /// Resolves the official ISO download link from Microsoft direct CDN or evaluation mirrors.
     public func resolveDownloadLink(
         for product: WindowsProduct,
         language: WindowsLanguage,

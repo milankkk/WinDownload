@@ -13,6 +13,7 @@ public actor MSDLAPIClient {
         self.session = URLSession(configuration: config)
     }
 
+    /// Fetches available product SKU languages from the MSDL API cache.
     public func fetchLanguages(productID: String) async throws -> [WindowsLanguage] {
         guard let url = URL(string: "\(baseURL)/skuinfo?product_id=\(productID)") else {
             throw URLError(.badURL)
@@ -54,6 +55,7 @@ public actor MSDLAPIClient {
         }
     }
 
+    /// Fetches resolved download links from the MSDL proxy cache endpoint.
     public func fetchDownloadLinks(productID: String, skuID: String) async throws -> [ResolvedDownloadOption] {
         guard let url = URL(string: "\(baseURL)/proxy?product_id=\(productID)&sku_id=\(skuID)") else {
             throw URLError(.badURL)

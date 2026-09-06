@@ -6,10 +6,12 @@ import SwiftUI
 import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    /// Terminates the application when its main window is closed.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
 
+    /// Disables automatic window tabbing for a clean single-window experience.
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSWindow.allowsAutomaticWindowTabbing = false
     }
@@ -22,6 +24,7 @@ struct WinDownloadApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #endif
 
+    /// Ensures a single running instance of the application.
     init() {
         #if canImport(AppKit)
         // Enforce single running instance

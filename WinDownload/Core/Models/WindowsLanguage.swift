@@ -5,12 +5,14 @@ public struct WindowsLanguage: Identifiable, Hashable, Codable {
     public let englishName: String
     public let localizedName: String
 
+    /// Initializes a Windows language entry with its SKU ID and localized titles.
     public init(id: String, englishName: String, localizedName: String? = nil) {
         self.id = id
         self.englishName = englishName
         self.localizedName = localizedName ?? englishName
     }
 
+    /// Returns a clean, simplified display name for dropdowns.
     public var displayName: String {
         let eng = englishName.trimmingCharacters(in: .whitespacesAndNewlines)
         let loc = localizedName.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -332,6 +332,7 @@ public struct WindowsDownloaderSelectionView: View {
         }
     }
 
+    /// Renders a labeled metadata row with a leading icon.
     private func infoRow<Content: View>(
         icon: String,
         iconColor: Color = .secondary,
@@ -356,6 +357,7 @@ public struct WindowsDownloaderSelectionView: View {
         }
     }
 
+    /// Renders a color-coded status badge tag for a Windows release.
     private func badgeView(for badge: WindowsBadge) -> some View {
         let color: Color
         switch badge {
@@ -381,6 +383,7 @@ public struct WindowsDownloaderSelectionView: View {
             )
     }
 
+    /// Presents a directory chooser dialog to select the destination folder.
     private func selectDestinationFolder() {
         #if canImport(AppKit)
         let panel = NSOpenPanel()

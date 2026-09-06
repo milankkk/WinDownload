@@ -3,6 +3,7 @@ import SwiftUI
 public struct ContentView: View {
     @StateObject private var coordinator = WindowsDownloaderCoordinator()
 
+    /// Initializes the root content view.
     public init() {}
 
     public var body: some View {
@@ -28,12 +29,6 @@ public struct ContentView: View {
         .frame(
             width: WinDownloadDesignTokens.windowWidth,
             height: WinDownloadDesignTokens.windowHeight
-        )
-        .frame(
-            minWidth: WinDownloadDesignTokens.windowWidth,
-            maxWidth: WinDownloadDesignTokens.windowWidth,
-            minHeight: WinDownloadDesignTokens.windowHeight,
-            maxHeight: WinDownloadDesignTokens.windowHeight
         )
         .sheet(isPresented: $coordinator.isOptionsPresented) {
             WindowsDownloaderOptionsSheet(coordinator: coordinator)

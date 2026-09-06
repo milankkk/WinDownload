@@ -2,6 +2,7 @@ import Foundation
 import CryptoKit
 
 public struct ChecksumCalculator {
+    /// Computes the SHA-256 hash of a file incrementally in chunks.
     public static func computeSHA256(
         for fileURL: URL,
         progress: ((_ bytesProcessed: Int64, _ totalBytes: Int64) -> Void)? = nil

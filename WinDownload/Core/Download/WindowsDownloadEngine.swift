@@ -15,6 +15,7 @@ public final class WindowsDownloadEngine: ObservableObject {
 
     public init() {}
 
+    /// Starts or restarts downloading an ISO from a given URI to the destination directory.
     public func startDownload(
         from uri: String,
         destinationDirectory: URL,
@@ -84,22 +85,20 @@ public final class WindowsDownloadEngine: ObservableObject {
             do {
                 let finalURL = try await delegate.awaitCompletion(task: task)
 
-                // Verifying Stage
+                let sha256: String?
                 if verifyChecksum {
                     self.currentStage = .verifying
                     self.status = .verifying
-                    let sha256 = try? await ChecksumCalculator.computeSHA256(for: finalURL)
-                    let attributes = try? FileManager.default.attributesOfItem(atPath: finalURL.path)
-                    let size = (attributes?[.size] as? Int64) ?? self.progress.bytesDownloaded
-
-                    self.currentStage = .completed
-                    self.status = .completed(fileURL: finalURL, fileSize: size, sha256: sha256)
+                    sha256 = try? await ChecksumCalculator.computeSHA256(for: finalURL)
                 } else {
-                    let attributes = try? FileManager.default.attributesOfItem(atPath: finalURL.path)
-                    let size = (attributes?[.size] as? Int64) ?? self.progress.bytesDownloaded
-                    self.currentStage = .completed
-                    self.status = .completed(fileURL: finalURL, fileSize: size, sha256: nil)
+                    sha256 = nil
                 }
+
+                let attributes = try? FileManager.default.attributesOfItem(atPath: finalURL.path)
+                let size = (attributes?[.size] as? Int64) ?? self.progress.bytesDownloaded
+
+                self.currentStage = .completed
+                self.status = .completed(fileURL: finalURL, fileSize: size, sha256: sha256)
             } catch is CancellationError {
                 self.status = .cancelled
             } catch {
@@ -115,6 +114,7 @@ public final class WindowsDownloadEngine: ObservableObject {
         }
     }
 
+    /// Pauses the active download task and stores resume data.
     public func pause() {
         guard case .downloading(isPaused: false) = status, let task = activeTask else { return }
         task.cancel(byProducingResumeData: { [weak self] data in
@@ -127,6 +127,7 @@ public final class WindowsDownloadEngine: ObservableObject {
         })
     }
 
+    /// Resumes a paused download with stored resume data.
     public func resume(destinationDirectory: URL, originalURI: String) {
         guard case .downloading(isPaused: true) = status else { return }
         startDownload(
@@ -136,6 +137,7 @@ public final class WindowsDownloadEngine: ObservableObject {
         )
     }
 
+    /// Cancels the ongoing download task and resets active network resources.
     public func cancel() {
         downloadTaskExecution?.cancel()
         downloadTaskExecution = nil
@@ -148,6 +150,7 @@ public final class WindowsDownloadEngine: ObservableObject {
         progress = DownloadProgressMetrics()
     }
 
+    /// Resets engine state back to idle for a new download.
     public func reset() {
         cancel()
         status = .idle

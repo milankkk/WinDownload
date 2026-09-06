@@ -46,6 +46,7 @@ public struct WindowsProduct: Identifiable, Hashable, Codable {
     public let evalURL: String?
     public let relatedIDs: [String]
 
+    /// Initializes a Windows product catalog entry.
     public init(
         id: String,
         name: String,
@@ -80,6 +81,7 @@ public struct WindowsProduct: Identifiable, Hashable, Codable {
         name
     }
 
+    /// User-facing channel and licensing description for the product.
     public var channelDescription: String {
         if isEvaluation {
             if badge == .ltsc {
@@ -107,6 +109,7 @@ public struct ResolvedDownloadOption: Identifiable, Hashable, Codable {
     public let expiresAt: Date?
     public let isCached: Bool
 
+    /// Initializes a resolved download option, parsing the filename from the URI if omitted.
     public init(
         uri: String,
         architecture: WindowsArchitecture,

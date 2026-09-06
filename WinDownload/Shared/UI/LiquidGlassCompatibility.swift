@@ -9,6 +9,7 @@ public enum WinDownloadSurfaceTone {
     case error
     case active
 
+    /// Computes the surface background fill color for the given color scheme.
     func fallbackFillColor(for colorScheme: ColorScheme) -> Color {
         switch self {
         case .neutral:
@@ -28,6 +29,7 @@ public enum WinDownloadSurfaceTone {
         }
     }
 
+    /// Computes the surface border stroke color for the given color scheme.
     func fallbackStrokeColor(for colorScheme: ColorScheme) -> Color {
         switch self {
         case .neutral:
@@ -125,18 +127,22 @@ public struct WinDownloadSecondaryButtonStyleModifier: ViewModifier {
 }
 
 public extension View {
+    /// Applies standard panel card background and border styling.
     func winDownloadPanelSurface(_ tone: WinDownloadSurfaceTone = .neutral, cornerRadius: CGFloat? = nil) -> some View {
         modifier(WinDownloadPanelSurfaceModifier(tone: tone, cornerRadius: cornerRadius))
     }
 
+    /// Applies docked bottom action bar surface styling.
     func winDownloadDockedBarSurface() -> some View {
         modifier(WinDownloadDockedBarSurfaceModifier())
     }
 
+    /// Applies primary call-to-action button styling.
     func winDownloadPrimaryButtonStyle(isEnabled: Bool = true) -> some View {
         modifier(WinDownloadPrimaryButtonStyleModifier(isEnabled: isEnabled))
     }
 
+    /// Applies secondary bordered button styling.
     func winDownloadSecondaryButtonStyle(isEnabled: Bool = true) -> some View {
         modifier(WinDownloadSecondaryButtonStyleModifier(isEnabled: isEnabled))
     }

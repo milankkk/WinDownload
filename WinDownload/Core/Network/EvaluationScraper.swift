@@ -13,6 +13,7 @@ public actor EvaluationScraper {
         self.session = URLSession(configuration: config)
     }
 
+    /// Fetches and resolves direct ISO download options from an evaluation page.
     public func fetchEvaluationLinks(evalURL: String) async throws -> [ResolvedDownloadOption] {
         guard let url = URL(string: evalURL) else {
             throw URLError(.badURL)
@@ -64,6 +65,7 @@ public actor EvaluationScraper {
         return options
     }
 
+    /// Extracts Microsoft fwlink redirection URLs from raw HTML content.
     private func extractFwlinks(from html: String) -> [String] {
         let pattern = "https://go\\.microsoft\\.com/fwlink/[^\"'\\s<>]+"
         guard let regex = try? NSRegularExpression(pattern: pattern) else { return [] }
@@ -84,6 +86,7 @@ public actor EvaluationScraper {
         return results
     }
 
+    /// Performs a HEAD request on a fwlink to discover the underlying direct ISO download URL.
     private func resolveDirectISO(fwlink: String) async -> String? {
         guard let url = URL(string: fwlink) else { return nil }
         var req = URLRequest(url: url)

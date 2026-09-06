@@ -20,6 +20,7 @@ public actor MicrosoftSessionClient {
         self.session = URLSession(configuration: config)
     }
 
+    /// Determines the appropriate Microsoft referer URL based on product ID.
     private func referer(for productID: String) -> String {
         guard let id = Int(productID) else {
             return "https://www.microsoft.com/en-us/software-download/windows8ISO"
@@ -32,6 +33,7 @@ public actor MicrosoftSessionClient {
         return "https://www.microsoft.com/en-us/software-download/windows8ISO"
     }
 
+    /// Initializes a telemetry session with Microsoft and returns the generated session ID.
     public func initializeSession() async -> String {
         let sessionID = UUID().uuidString.lowercased()
 
@@ -86,6 +88,7 @@ public actor MicrosoftSessionClient {
         return sessionID
     }
 
+    /// Fetches supported languages for a product ID using Microsoft's connector API.
     public func fetchLanguages(productID: String, sessionID: String) async throws -> [WindowsLanguage] {
         guard var components = URLComponents(string: "https://www.microsoft.com/software-download-connector/api/getskuinformationbyproductedition") else {
             throw URLError(.badURL)
@@ -114,6 +117,7 @@ public actor MicrosoftSessionClient {
         return try parseLanguagesResponse(data: data)
     }
 
+    /// Fetches temporary direct CDN download links for a chosen SKU and product ID.
     public func fetchDownloadLinks(
         productID: String,
         skuID: String,
@@ -146,6 +150,7 @@ public actor MicrosoftSessionClient {
         return try parseDownloadLinksResponse(data: data)
     }
 
+    /// Parses and unescapes the Microsoft SKU information response.
     private func parseLanguagesResponse(data: Data) throws -> [WindowsLanguage] {
         struct SKUResponse: Decodable {
             struct SKUItem: Decodable {
@@ -182,6 +187,7 @@ public actor MicrosoftSessionClient {
         }
     }
 
+    /// Parses and decodes download link options returned by Microsoft.
     private func parseDownloadLinksResponse(data: Data) throws -> [ResolvedDownloadOption] {
         struct DownloadOptionResponse: Decodable {
             struct OptionItem: Decodable {
@@ -225,6 +231,7 @@ public actor MicrosoftSessionClient {
         }
     }
 
+    /// Parses the URL signature expiration timestamp from the download link.
     private func parseExpiry(from uri: String) -> Date? {
         guard let comps = URLComponents(string: uri),
               let seValue = comps.queryItems?.first(where: { $0.name == "se" })?.value else {
@@ -234,6 +241,7 @@ public actor MicrosoftSessionClient {
         return formatter.date(from: seValue) ?? Date().addingTimeInterval(86400)
     }
 
+    /// Unwraps doubly-escaped JSON responses returned by certain Microsoft endpoints.
     private func unwrapJSONStringIfNeeded(_ data: Data) -> Data {
         guard let str = String(data: data, encoding: .utf8), str.hasPrefix("\""), str.hasSuffix("\"") else {
             return data
@@ -245,6 +253,7 @@ public actor MicrosoftSessionClient {
         return data
     }
 
+    /// Extracts the first capture group of a regular expression from text.
     private func extractPattern(pattern: String, from text: String) -> String? {
         guard let regex = try? NSRegularExpression(pattern: pattern) else { return nil }
         let nsString = text as NSString

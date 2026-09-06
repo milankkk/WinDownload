@@ -5,6 +5,7 @@ public enum WinDownloadVisualMode {
     case legacy
 }
 
+/// Resolves the visual style mode depending on the macOS version.
 public func currentWinDownloadVisualMode() -> WinDownloadVisualMode {
     if #available(macOS 26.0, *) {
         return .liquidGlass
@@ -29,6 +30,7 @@ public enum WinDownloadDesignTokens {
     public static let bottomBarContentSpacing: CGFloat = 12
     public static let dockedBarMinHeight: CGFloat = 84
 
+    /// Returns the standard panel corner radius for the given visual mode.
     public static func panelCornerRadius(for mode: WinDownloadVisualMode) -> CGFloat {
         switch mode {
         case .liquidGlass: return 14
@@ -36,6 +38,7 @@ public enum WinDownloadDesignTokens {
         }
     }
 
+    /// Returns the prominent panel corner radius for hero cards.
     public static func prominentPanelCornerRadius(for mode: WinDownloadVisualMode) -> CGFloat {
         switch mode {
         case .liquidGlass: return 16
@@ -43,6 +46,7 @@ public enum WinDownloadDesignTokens {
         }
     }
 
+    /// Returns the top corner radius for the docked bottom action bar.
     public static func dockedBarTopCornerRadius(for mode: WinDownloadVisualMode) -> CGFloat {
         switch mode {
         case .liquidGlass: return 14

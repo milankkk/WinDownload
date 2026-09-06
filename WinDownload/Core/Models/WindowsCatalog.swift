@@ -331,17 +331,19 @@ public struct WindowsCatalog {
         ]
     }
 
+    /// Returns all catalog products belonging to a given category.
     public func products(for category: WindowsCategory) -> [WindowsProduct] {
         allProducts.filter { $0.category == category }
     }
 
+    /// Returns primary selectable editions for a category, filtering out secondary arch variants.
     public func editions(for category: WindowsCategory) -> [WindowsProduct] {
-        // Return primary selectable editions for category, filtering out secondary arch variants
         allProducts.filter { product in
             product.category == category && !product.isSecondaryArchitectureVariant
         }
     }
 
+    /// Resolves the architecture-specific variant of a product (e.g. mapping to ARM64 equivalent).
     public func resolveProduct(for product: WindowsProduct, architecture: WindowsArchitecture) -> WindowsProduct {
         if architecture == .arm64, let armID = product.arm64EquivalentID, let armProduct = findProduct(id: armID) {
             return armProduct
@@ -349,10 +351,12 @@ public struct WindowsCatalog {
         return product
     }
 
+    /// Finds a product in the catalog by its unique identifier.
     public func findProduct(id: String) -> WindowsProduct? {
         allProducts.first { $0.id == id }
     }
 
+    /// Searches the catalog by product name, edition, build number, or category.
     public func search(query: String) -> [WindowsProduct] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if trimmed.isEmpty {

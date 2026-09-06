@@ -79,6 +79,7 @@ public struct WindowsDownloaderProcessView: View {
         }
     }
 
+    /// Renders an error message card with an action to retry the workflow.
     private func errorCard(message: String) -> some View {
         StatusCard(tone: .error, density: .compact) {
             HStack(alignment: .top, spacing: 10) {
@@ -220,6 +221,7 @@ public struct WindowsDownloaderProcessView: View {
         }
     }
 
+    /// Renders an individual stage item with dynamic completion state.
     private func stageRow(for stage: DownloadWorkflowStage) -> some View {
         let isCurrent: Bool
         let isCompleted: Bool

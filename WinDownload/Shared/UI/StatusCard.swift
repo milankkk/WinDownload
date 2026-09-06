@@ -11,6 +11,7 @@ public struct StatusCard<Content: View>: View {
     public let density: StatusCardDensity
     private let content: Content
 
+    /// Creates a styled container card with a specified surface tone and density.
     public init(
         tone: WinDownloadSurfaceTone = .neutral,
         cornerRadius: CGFloat? = nil,
