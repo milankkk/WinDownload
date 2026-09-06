@@ -2,9 +2,9 @@
 
 [![Download Nightly DMG](https://img.shields.io/badge/Download-Nightly%20DMG-blue?logo=apple)](https://github.com/milankkk/WinDownload/releases/download/nightly/WinDownload.dmg)
 
-A native macOS application to discover and download official Windows ISOs directly from Microsoft's CDN — no Windows PC, browser tricks, or Media Creation Tool required.
+A native macOS application to download official Windows ISOs directly from Microsoft.
 
-> **Note:** This project is vibecoded with AI pair programming and based on two open-source projects: **[macUSB](https://github.com/Kruszoneq/macUSB)** (UI design and bootable USB handoff) and **[windows-iso-downloader](https://github.com/starkSV/windows-iso-downloader)** (Microsoft CDN resolution logic).
+> **Note:** This project is vibecoded with AI and based on two open-source projects: **[macUSB](https://github.com/Kruszoneq/macUSB)** (UI design and bootable USB handoff) and **[windows-iso-downloader](https://github.com/starkSV/windows-iso-downloader)** (Microsoft CDN resolution logic).
 
 ---
 
