@@ -112,16 +112,6 @@ OS_NAME="$(uname -s)"
 if [[ "$OS_NAME" != "Darwin" ]]; then
     warn "You are currently running on $OS_NAME (not macOS)."
     info "WinDownload is a native macOS application designed to compile on a Mac using Xcode or the Swift toolchain."
-    echo ""
-    info "To test the link resolution pipeline on Linux/Windows, running the test resolver:"
-    if command -v go >/dev/null 2>&1; then
-        go run scripts/test_resolver.go
-    else
-        echo "Go is not installed to run scripts/test_resolver.go."
-    fi
-    echo ""
-    info "Once you transfer/clone this folder to your MacBook, run:"
-    echo -e "    ${BOLD}./build.sh --run${NC}"
     exit 0
 fi
 
