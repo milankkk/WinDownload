@@ -46,12 +46,14 @@ usage() {
     echo "  -r, --run       Build and immediately launch WinDownload.app"
     echo "  -d, --debug     Build in Debug configuration (default: Release)"
     echo "  -t, --test      Run unit tests before building"
+    echo "  -m, --dmg       Package WinDownload.app into a distributable .dmg disk image"
     echo "  -s, --spm       Force build using Swift Package Manager instead of xcodebuild"
     echo "  -c, --clean     Clean previous build artifacts before building"
     echo "  -h, --help      Show this help message"
     echo ""
     echo "Examples:"
     echo "  ./build.sh            # Standard Release build into build/WinDownload.app"
+    echo "  ./build.sh --dmg      # Build and create build/WinDownload.dmg"
     echo "  ./build.sh --run      # Build and open the app immediately"
     echo "  ./build.sh --test     # Run tests and build"
     exit 0
@@ -63,6 +65,7 @@ AUTO_RUN=false
 RUN_TESTS=false
 USE_SPM=false
 DO_CLEAN=false
+CREATE_DMG=false
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -77,6 +80,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -t|--test)
             RUN_TESTS=true
+            shift
+            ;;
+        -m|--dmg)
+            CREATE_DMG=true
             shift
             ;;
         -s|--spm)
@@ -218,12 +225,28 @@ if command -v codesign >/dev/null 2>&1; then
     success "Signed bundle for local execution."
 fi
 
+# 5. Package into DMG if requested
+if [[ "$CREATE_DMG" = true ]]; then
+    info "Packaging WinDownload into disk image (.dmg)..."
+    DMG_PATH="$BUILD_DIR/WinDownload.dmg"
+    DMG_TEMP_DIR=$(mktemp -d /tmp/dmg-pack-XXXXXX)
+    cp -R "$OUTPUT_APP" "$DMG_TEMP_DIR/"
+    ln -s /Applications "$DMG_TEMP_DIR/Applications"
+    hdiutil create -volname "WinDownload" -srcfolder "$DMG_TEMP_DIR" -ov -format UDZO "$DMG_PATH" -quiet
+    rm -rf "$DMG_TEMP_DIR"
+    shasum -a 256 "$DMG_PATH" > "$DMG_PATH.sha256"
+    success "DMG created at: $DMG_PATH"
+fi
+
 echo ""
 success "Build completed successfully!"
 echo -e "${BOLD}Application Bundle:${NC} $OUTPUT_APP"
+if [[ "$CREATE_DMG" = true ]]; then
+    echo -e "${BOLD}Disk Image (.dmg):${NC} $BUILD_DIR/WinDownload.dmg"
+fi
 echo ""
 
-# 5. Launch or instructions
+# 6. Launch or instructions
 if [[ "$AUTO_RUN" = true ]]; then
     info "Launching WinDownload.app..."
     open "$OUTPUT_APP"

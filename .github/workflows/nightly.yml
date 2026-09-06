@@ -1,0 +1,62 @@
+name: Nightly Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Publish Nightly DMG
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          elif [ -d "/Applications/Xcode.app" ]; then
+            sudo xcode-select -s /Applications/Xcode.app
+          fi
+          xcodebuild -version
+
+      - name: Run Unit Tests
+        run: swift test
+
+      - name: Build Application and Create DMG
+        run: ./build.sh --dmg
+
+      - name: Publish Nightly Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly
+          name: "WinDownload Nightly"
+          draft: false
+          prerelease: true
+          make_latest: false
+          body: |
+            ## WinDownload Nightly Build
+            Automatically built from commit [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on `main`.
+
+            ### Download
+            * **[WinDownload.dmg](https://github.com/${{ github.repository }}/releases/download/nightly/WinDownload.dmg)** — Universal macOS disk image
+            * **[WinDownload.dmg.sha256](https://github.com/${{ github.repository }}/releases/download/nightly/WinDownload.dmg.sha256)** — SHA-256 checksum
+
+            ### Installation
+            1. Download **`WinDownload.dmg`**.
+            2. Open the disk image and drag **WinDownload** into your **Applications** folder.
+            3. If macOS displays an unidentified developer warning on first launch (due to ad-hoc signing), right-click (or Control-click) **WinDownload** in `/Applications` and select **Open**, or run:
+               ```bash
+               xattr -cr /Applications/WinDownload.app
+               ```
+          files: |
+            build/WinDownload.dmg
+            build/WinDownload.dmg.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
