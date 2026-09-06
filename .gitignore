@@ -1,7 +1,43 @@
+# macOS System Files
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Xcode & Swift Package Manager
 .build/
 build/
 DerivedData/
 *.xcuserstate
-project.xcworkspace/
 xcuserdata/
+project.xcworkspace/
+*.xcscmblueprint
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Disk Images & Download Artifacts
+*.dmg
+*.dmg.sha256
+*.iso
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.swp
+*~
+
+# IDE & Editor Configurations
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Agent & Context Files
+CONTEXT.md
+CONTEXT*.md
+scratch/
