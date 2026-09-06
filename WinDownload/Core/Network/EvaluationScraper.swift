@@ -96,14 +96,6 @@ public actor EvaluationScraper {
             return finalURL
         }
 
-        // Fallback: regular GET if HEAD is rejected
-        req.httpMethod = "GET"
-        if let (_, response) = try? await session.data(for: req),
-           let finalURL = response.url?.absoluteString,
-           finalURL.lowercased().contains(".iso") {
-            return finalURL
-        }
-
         return nil
     }
 }

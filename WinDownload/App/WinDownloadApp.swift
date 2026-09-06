@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(WinDownloadCore)
+@_exported import WinDownloadCore
+#endif
 #if canImport(AppKit)
 import AppKit
 

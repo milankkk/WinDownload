@@ -15,12 +15,8 @@ public struct WindowsDownloaderSelectionView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: WinDownloadDesignTokens.sectionGroupSpacing) {
                     headerSection
-                    categoryPickerSection
-                    if !coordinator.searchQuery.isEmpty || coordinator.filteredProducts.count > 1 {
-                        searchBarSection
-                    }
-                    productsSection
-                    configurationSection
+                    selectorsSection
+                    detailsCard
                 }
                 .padding(.horizontal, WinDownloadDesignTokens.contentHorizontalPadding)
                 .padding(.top, WinDownloadDesignTokens.contentVerticalPadding)
@@ -30,7 +26,7 @@ public struct WindowsDownloaderSelectionView: View {
             BottomActionBar {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(coordinator.selectedProduct.name)
+                        Text(coordinator.selectedProduct.editionName)
                             .font(.subheadline.weight(.semibold))
                             .lineLimit(1)
                         Text("\(coordinator.selectedArchitecture.shortName) • \(coordinator.selectedLanguage.englishName)")
@@ -51,7 +47,7 @@ public struct WindowsDownloaderSelectionView: View {
                         .padding(.vertical, 4)
                     }
                     .winDownloadPrimaryButtonStyle()
-                    .disabled(coordinator.hasLowDiskSpaceWarning)
+                    .disabled(coordinator.hasLowDiskSpaceWarning || coordinator.isResolvingLink)
                 }
             }
         }
@@ -87,96 +83,237 @@ public struct WindowsDownloaderSelectionView: View {
         }
     }
 
-    private var categoryPickerSection: some View {
-        Picker("Category", selection: $coordinator.selectedCategory) {
-            ForEach(WindowsCategory.allCases) { cat in
-                Label(cat.rawValue, systemImage: cat.iconName).tag(cat)
-            }
-        }
-        .pickerStyle(.segmented)
-    }
-
-    private var searchBarSection: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(.secondary)
-            TextField("Search Windows releases...", text: $coordinator.searchQuery)
-                .textFieldStyle(.plain)
-            if !coordinator.searchQuery.isEmpty {
-                Button {
-                    coordinator.searchQuery = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(8)
-        .winDownloadPanelSurface(.neutral)
-    }
-
-    private var productsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Available Editions")
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.secondary)
-
-            VStack(spacing: 8) {
-                ForEach(coordinator.filteredProducts) { product in
-                    productCard(for: product)
-                }
-            }
-        }
-    }
-
-    private func productCard(for product: WindowsProduct) -> some View {
-        let isSelected = coordinator.selectedProduct.id == product.id
-
-        return Button {
-            withAnimation(.easeInOut(duration: 0.15)) {
-                coordinator.selectedProduct = product
-            }
-        } label: {
-            HStack(spacing: 12) {
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 18))
-                    .foregroundStyle(isSelected ? Color.accentColor : Color.secondary.opacity(0.6))
-
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 8) {
-                        Text(product.name)
-                            .font(.body.weight(.medium))
-                            .foregroundStyle(.primary)
-
-                        badgeView(for: product.badge)
-                    }
-
-                    Text(product.build)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+    private var selectorsSection: some View {
+        StatusCard(tone: .subtle, density: .regular) {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 8) {
+                    Image(systemName: "slider.horizontal.2.square")
+                        .foregroundStyle(.tint)
+                    Text("Select Release & Target System")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
                 }
 
-                Spacer()
-
-                HStack(spacing: 4) {
-                    ForEach(product.architectures) { arch in
-                        Text(arch.shortName)
-                            .font(.system(size: 10, weight: .bold))
+                // Row 1: Two dropdowns next to each other (Windows Version & Edition)
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label("Windows Version", systemImage: "window.badge.magnifyingglass")
+                            .font(.caption.weight(.medium))
                             .foregroundStyle(.secondary)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(
-                                Capsule().fill(Color.secondary.opacity(0.12))
-                            )
+
+                        Picker("", selection: $coordinator.selectedCategory) {
+                            ForEach(WindowsCategory.allCases) { cat in
+                                Text(cat.rawValue).tag(cat)
+                            }
+                        }
+                        .labelsHidden()
+                        .frame(maxWidth: .infinity)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label("Edition", systemImage: "sparkles")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.secondary)
+
+                        Picker("", selection: $coordinator.selectedProduct) {
+                            ForEach(coordinator.availableEditions) { prod in
+                                Text(prod.editionName).tag(prod)
+                            }
+                        }
+                        .labelsHidden()
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+
+                Divider()
+
+                // Row 2: Two dropdowns next to each other (Architecture & Language)
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label("Architecture", systemImage: "cpu")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.secondary)
+
+                        Picker("", selection: $coordinator.selectedArchitecture) {
+                            ForEach(coordinator.availableArchitectures) { arch in
+                                Text(arch.displayName).tag(arch)
+                            }
+                        }
+                        .labelsHidden()
+                        .frame(maxWidth: .infinity)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 4) {
+                            Label("Language", systemImage: "globe")
+                                .font(.caption.weight(.medium))
+                                .foregroundStyle(.secondary)
+                            if coordinator.isLoadingLanguages {
+                                ProgressView()
+                                    .controlSize(.mini)
+                            }
+                        }
+
+                        Picker("", selection: $coordinator.selectedLanguage) {
+                            ForEach(coordinator.availableLanguages) { lang in
+                                Text(lang.displayName).tag(lang)
+                            }
+                        }
+                        .labelsHidden()
+                        .frame(maxWidth: .infinity)
+                        .disabled(coordinator.isLoadingLanguages)
                     }
                 }
             }
-            .padding(WinDownloadDesignTokens.statusCardCompactPadding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .winDownloadPanelSurface(isSelected ? .active : .neutral)
         }
-        .buttonStyle(.plain)
+    }
+
+    private var detailsCard: some View {
+        StatusCard(tone: .neutral, density: .regular) {
+            VStack(alignment: .leading, spacing: 12) {
+                // Header
+                HStack(spacing: 8) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.tint)
+                    Text("Download Information")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                }
+
+                Divider()
+
+                // Info 1: Windows Edition
+                infoRow(icon: "sparkles", iconColor: .blue, label: "Edition") {
+                    HStack(spacing: 8) {
+                        Text(coordinator.selectedProduct.name)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.primary)
+                            .lineLimit(1)
+                        badgeView(for: coordinator.selectedProduct.badge)
+                    }
+                }
+
+                Divider()
+
+                // Info 2: Windows Build Version
+                infoRow(icon: "tag.fill", iconColor: .purple, label: "Build") {
+                    Text(coordinator.selectedProduct.build)
+                        .font(.subheadline)
+                        .foregroundStyle(.primary)
+                }
+
+                Divider()
+
+                // Info 3: Architecture
+                infoRow(icon: "cpu.fill", iconColor: .indigo, label: "Architecture") {
+                    Text(coordinator.selectedArchitecture.displayName)
+                        .font(.subheadline)
+                        .foregroundStyle(.primary)
+                }
+
+                Divider()
+
+                // Info 4: Language
+                infoRow(icon: "globe", iconColor: .teal, label: "Language") {
+                    HStack(spacing: 6) {
+                        Text(coordinator.selectedLanguage.displayName)
+                            .font(.subheadline)
+                            .foregroundStyle(.primary)
+                        if coordinator.isLoadingLanguages {
+                            ProgressView()
+                                .controlSize(.mini)
+                        }
+                    }
+                }
+
+                Divider()
+
+                // Info 5: Download Source
+                infoRow(icon: "checkmark.shield.fill", iconColor: .green, label: "Source") {
+                    HStack(spacing: 6) {
+                        Text("Official Microsoft CDN")
+                            .font(.subheadline.weight(.medium))
+                        Text("(Direct & Untouched)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Divider()
+
+                // Info 6: Destination Folder
+                infoRow(icon: "folder.fill", iconColor: .orange, label: "Save To") {
+                    HStack {
+                        Text(coordinator.destinationDirectory.path)
+                            .font(.system(.subheadline, design: .monospaced))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                            .help(coordinator.destinationDirectory.path)
+
+                        Spacer()
+
+                        Button("Change...") {
+                            selectDestinationFolder()
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                    }
+                }
+
+                Divider()
+
+                // Info 7: Storage & Disk Space
+                infoRow(
+                    icon: coordinator.hasLowDiskSpaceWarning ? "exclamationmark.triangle.fill" : "internaldrive.fill",
+                    iconColor: coordinator.hasLowDiskSpaceWarning ? .orange : .mint,
+                    label: "Storage"
+                ) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 6) {
+                            Text(coordinator.availableDiskSpaceText)
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(coordinator.hasLowDiskSpaceWarning ? .orange : .primary)
+                            Text("(~6 GB needed for ISO)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        if coordinator.hasLowDiskSpaceWarning {
+                            Text("Low disk space warning: Free up space before starting download.")
+                                .font(.caption)
+                                .foregroundStyle(.orange)
+                        }
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+            .padding(.horizontal, 2)
+        }
+    }
+
+    private func infoRow<Content: View>(
+        icon: String,
+        iconColor: Color = .secondary,
+        label: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        HStack(alignment: .center, spacing: 14) {
+            Label {
+                Text(label)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            } icon: {
+                Image(systemName: icon)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(iconColor)
+                    .frame(width: 18)
+            }
+            .frame(width: 130, alignment: .leading)
+
+            content()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     private func badgeView(for badge: WindowsBadge) -> some View {
@@ -184,6 +321,7 @@ public struct WindowsDownloaderSelectionView: View {
         switch badge {
         case .latest: color = .green
         case .stable: color = .blue
+        case .ltsc: color = .cyan
         case .arm64: color = .purple
         case .server: color = .orange
         case .eval: color = .yellow
@@ -201,90 +339,6 @@ public struct WindowsDownloaderSelectionView: View {
             .overlay(
                 Capsule().stroke(color.opacity(0.35), lineWidth: 0.6)
             )
-    }
-
-    private var configurationSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Download Settings")
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.secondary)
-
-            StatusCard(tone: .neutral, density: .regular) {
-                VStack(spacing: 12) {
-                    // Language
-                    HStack {
-                        Label("Language", systemImage: "globe")
-                            .font(.subheadline)
-                        Spacer()
-                        if coordinator.isLoadingLanguages {
-                            ProgressView()
-                                .controlSize(.small)
-                        } else {
-                            Picker("", selection: $coordinator.selectedLanguage) {
-                                ForEach(coordinator.availableLanguages) { lang in
-                                    Text(lang.displayName).tag(lang)
-                                }
-                            }
-                            .labelsHidden()
-                            .frame(maxWidth: 220)
-                        }
-                    }
-
-                    Divider()
-
-                    // Architecture
-                    HStack {
-                        Label("Architecture", systemImage: "cpu")
-                            .font(.subheadline)
-                        Spacer()
-                        Picker("", selection: $coordinator.selectedArchitecture) {
-                            ForEach(coordinator.selectedProduct.architectures) { arch in
-                                Text(arch.shortName).tag(arch)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                        .frame(maxWidth: 180)
-                    }
-
-                    Divider()
-
-                    // Destination Folder
-                    HStack {
-                        Label("Save To", systemImage: "folder")
-                            .font(.subheadline)
-                        Spacer()
-                        Button {
-                            selectDestinationFolder()
-                        } label: {
-                            HStack(spacing: 6) {
-                                Text(coordinator.destinationDirectory.lastPathComponent)
-                                    .font(.subheadline)
-                                    .lineLimit(1)
-                                Image(systemName: "chevron.up.chevron.down")
-                                    .font(.caption2)
-                            }
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.small)
-                    }
-
-                    // Disk Space Info
-                    HStack {
-                        Image(systemName: coordinator.hasLowDiskSpaceWarning ? "exclamationmark.triangle.fill" : "internaldrive")
-                            .foregroundStyle(coordinator.hasLowDiskSpaceWarning ? .orange : .secondary)
-                        Text(coordinator.availableDiskSpaceText)
-                            .font(.caption)
-                            .foregroundStyle(coordinator.hasLowDiskSpaceWarning ? .orange : .secondary)
-                        if coordinator.hasLowDiskSpaceWarning {
-                            Text("(At least 9 GB recommended)")
-                                .font(.caption)
-                                .foregroundStyle(.orange)
-                        }
-                        Spacer()
-                    }
-                }
-            }
-        }
     }
 
     private func selectDestinationFolder() {

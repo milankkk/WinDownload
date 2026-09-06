@@ -2,13 +2,11 @@ import SwiftUI
 
 public struct WindowsDownloaderProcessView: View {
     @ObservedObject var coordinator: WindowsDownloaderCoordinator
+    @ObservedObject private var engine: WindowsDownloadEngine
 
     public init(coordinator: WindowsDownloaderCoordinator) {
         self.coordinator = coordinator
-    }
-
-    private var engine: WindowsDownloadEngine {
-        coordinator.downloadEngine
+        self._engine = ObservedObject(wrappedValue: coordinator.downloadEngine)
     }
 
     public var body: some View {

@@ -168,7 +168,7 @@ public struct WindowsDownloaderSummaryView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "externaldrive.fill.badge.plus")
                         .font(.system(size: 26))
-                        .foregroundStyle(.accentColor)
+                        .foregroundStyle(Color.accentColor)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Create Bootable USB")

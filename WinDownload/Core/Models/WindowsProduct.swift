@@ -4,7 +4,9 @@ public enum WindowsCategory: String, CaseIterable, Identifiable, Codable {
     case windows11 = "Windows 11"
     case windows10 = "Windows 10"
     case windowsServer = "Windows Server"
-    case legacy = "Legacy"
+    case windows8 = "Windows 8.1"
+
+    public static let legacy: WindowsCategory = .windows8
 
     public var id: String { rawValue }
 
@@ -13,7 +15,7 @@ public enum WindowsCategory: String, CaseIterable, Identifiable, Codable {
         case .windows11: return "sparkles"
         case .windows10: return "desktopcomputer"
         case .windowsServer: return "server.rack"
-        case .legacy: return "archivebox"
+        case .windows8: return "archivebox"
         }
     }
 }
@@ -21,6 +23,7 @@ public enum WindowsCategory: String, CaseIterable, Identifiable, Codable {
 public enum WindowsBadge: String, Codable {
     case latest = "LATEST"
     case stable = "STABLE"
+    case ltsc = "LTSC"
     case arm64 = "ARM64"
     case server = "SERVER"
     case eol = "EOL"
@@ -31,32 +34,41 @@ public enum WindowsBadge: String, Codable {
 public struct WindowsProduct: Identifiable, Hashable, Codable {
     public let id: String
     public let name: String
+    public let editionName: String
     public let build: String
     public let category: WindowsCategory
     public let badge: WindowsBadge
     public let architectures: [WindowsArchitecture]
+    public let arm64EquivalentID: String?
     public let isEvaluation: Bool
+    public let directISOURL: String?
     public let evalURL: String?
     public let relatedIDs: [String]
 
     public init(
         id: String,
         name: String,
+        editionName: String? = nil,
         build: String,
         category: WindowsCategory,
         badge: WindowsBadge,
         architectures: [WindowsArchitecture],
+        arm64EquivalentID: String? = nil,
         isEvaluation: Bool = false,
+        directISOURL: String? = nil,
         evalURL: String? = nil,
         relatedIDs: [String] = []
     ) {
         self.id = id
         self.name = name
+        self.editionName = editionName ?? name
         self.build = build
         self.category = category
         self.badge = badge
         self.architectures = architectures
+        self.arm64EquivalentID = arm64EquivalentID
         self.isEvaluation = isEvaluation
+        self.directISOURL = directISOURL
         self.evalURL = evalURL
         self.relatedIDs = relatedIDs
     }

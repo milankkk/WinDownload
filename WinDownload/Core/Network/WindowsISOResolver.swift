@@ -43,13 +43,24 @@ public actor WindowsISOResolver {
         language: WindowsLanguage,
         architecture: WindowsArchitecture
     ) async throws -> ResolvedDownloadOption {
-        if product.isEvaluation, let evalURL = product.evalURL {
-            let evalOptions = try await EvaluationScraper.shared.fetchEvaluationLinks(evalURL: evalURL)
-            if let matched = evalOptions.first(where: { $0.architecture == architecture }) {
-                return matched
+        // 1. Check for direct ISO URL or evaluation link
+        if product.isEvaluation {
+            if let direct = product.directISOURL, !direct.isEmpty {
+                return ResolvedDownloadOption(
+                    uri: direct,
+                    architecture: architecture,
+                    expiresAt: nil,
+                    isCached: false
+                )
             }
-            if let first = evalOptions.first {
-                return first
+            if let evalURL = product.evalURL {
+                let evalOptions = try await EvaluationScraper.shared.fetchEvaluationLinks(evalURL: evalURL)
+                if let matched = evalOptions.first(where: { $0.architecture == architecture }) {
+                    return matched
+                }
+                if let first = evalOptions.first {
+                    return first
+                }
             }
             throw NSError(
                 domain: "WindowsISOResolver",
@@ -58,12 +69,34 @@ public actor WindowsISOResolver {
             )
         }
 
-        // Try direct Microsoft API
-        let sessionID = activeSessionID ?? (await MicrosoftSessionClient.shared.initializeSession())
+        // 2. Resolve architecture-specific product variant (e.g. 3113 -> 3131 for ARM64)
+        let effectiveProduct = WindowsCatalog.shared.resolveProduct(for: product, architecture: architecture)
+
+        // 3. Ensure valid SKU ID for the effective product
+        var targetSKU = language.id
+        if targetSKU.isEmpty || targetSKU.hasPrefix("eval-") {
+            let langs = try await resolveLanguages(for: effectiveProduct)
+            if let match = langs.first(where: { $0.englishName.localizedCaseInsensitiveCompare(language.englishName) == .orderedSame }) {
+                targetSKU = match.id
+            } else if let match = langs.first(where: { $0.englishName.localizedCaseInsensitiveContains("English") && !$0.englishName.localizedCaseInsensitiveContains("International") }) {
+                targetSKU = match.id
+            } else if let first = langs.first {
+                targetSKU = first.id
+            }
+        }
+
+        // 4. Try direct Microsoft API first
+        let sessionID: String
+        if let activeSessionID {
+            sessionID = activeSessionID
+        } else {
+            sessionID = await MicrosoftSessionClient.shared.initializeSession()
+        }
+
         do {
             let options = try await MicrosoftSessionClient.shared.fetchDownloadLinks(
-                productID: product.id,
-                skuID: language.id,
+                productID: effectiveProduct.id,
+                skuID: targetSKU,
                 sessionID: sessionID
             )
 
@@ -76,8 +109,8 @@ public actor WindowsISOResolver {
         } catch {
             // Fallback to MSDL API
             let msdlOptions = try await MSDLAPIClient.shared.fetchDownloadLinks(
-                productID: product.id,
-                skuID: language.id
+                productID: effectiveProduct.id,
+                skuID: targetSKU
             )
             if let matched = msdlOptions.first(where: { $0.architecture == architecture }) {
                 return matched

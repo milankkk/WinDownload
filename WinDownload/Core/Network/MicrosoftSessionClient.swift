@@ -154,7 +154,7 @@ public actor MicrosoftSessionClient {
                 let LocalizedLanguage: String?
             }
             struct MSError: Decodable {
-                let Type: Double?
+                let `Type`: Double?
                 let Value: String?
             }
             let Skus: [SKUItem]?
@@ -190,7 +190,7 @@ public actor MicrosoftSessionClient {
                 let DownloadType: Int?
             }
             struct MSError: Decodable {
-                let Type: Double?
+                let `Type`: Double?
                 let Value: String?
             }
             let ProductDownloadOptions: [OptionItem]?

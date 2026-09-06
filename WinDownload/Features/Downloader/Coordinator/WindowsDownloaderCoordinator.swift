@@ -10,10 +10,17 @@ public enum DownloaderScreen: Equatable {
 @MainActor
 public final class WindowsDownloaderCoordinator: ObservableObject {
     // Catalog & Filter
-    @Published public var selectedCategory: WindowsCategory = .windows11
+    @Published public var selectedCategory: WindowsCategory = .windows11 {
+        didSet {
+            if let first = availableEditions.first {
+                selectedProduct = first
+            }
+        }
+    }
     @Published public var searchQuery: String = ""
     @Published public var selectedProduct: WindowsProduct {
         didSet {
+            updateArchitectureForSelectedProduct()
             loadLanguagesForSelectedProduct()
         }
     }
@@ -22,6 +29,14 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
     @Published public var selectedArchitecture: WindowsArchitecture = .x64
     @Published public var isLoadingLanguages: Bool = false
     @Published public var languageError: String? = nil
+
+    public var availableEditions: [WindowsProduct] {
+        WindowsCatalog.shared.editions(for: selectedCategory)
+    }
+
+    public var availableArchitectures: [WindowsArchitecture] {
+        selectedProduct.architectures
+    }
 
     // Destination Directory & Space
     @Published public var destinationDirectory: URL
@@ -44,7 +59,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
 
     public init() {
         let defaultCatalog = WindowsCatalog.shared
-        let initialProduct = defaultCatalog.products(for: .windows11).first ?? defaultCatalog.allProducts[0]
+        let initialProduct = defaultCatalog.editions(for: .windows11).first ?? defaultCatalog.allProducts[0]
         self.selectedProduct = initialProduct
 
         let defaultDownloads = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
@@ -69,7 +84,7 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         if !searchQuery.isEmpty {
             return WindowsCatalog.shared.search(query: searchQuery)
         }
-        return WindowsCatalog.shared.products(for: selectedCategory)
+        return availableEditions
     }
 
     public func refreshDiskSpace() {
@@ -82,14 +97,21 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         refreshDiskSpace()
     }
 
+    private func updateArchitectureForSelectedProduct() {
+        let supported = availableArchitectures
+        if !supported.contains(selectedArchitecture) {
+            if supported.contains(WindowsArchitecture.currentHostRecommended) {
+                selectedArchitecture = WindowsArchitecture.currentHostRecommended
+            } else {
+                selectedArchitecture = supported.first ?? .x64
+            }
+        }
+    }
+
     public func loadLanguagesForSelectedProduct() {
         isLoadingLanguages = true
         languageError = nil
-
-        // Automatically update selected architecture if not supported by new product
-        if !selectedProduct.architectures.contains(selectedArchitecture) {
-            selectedArchitecture = selectedProduct.architectures.first ?? .x64
-        }
+        updateArchitectureForSelectedProduct()
 
         Task {
             do {
@@ -166,6 +188,13 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
     }
 
     private func setupEngineSubscriptions() {
+        downloadEngine.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+
         downloadEngine.$status
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
