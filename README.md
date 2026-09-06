@@ -45,4 +45,4 @@ open WinDownload.xcodeproj
 
 ## License
 
-MIT License.
+This project is licensed under the [GNU General Public License v2.0](LICENSE) (GPL-2.0).
