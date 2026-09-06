@@ -49,6 +49,19 @@ public struct WindowsDownloaderOptionsSheet: View {
 
                 Divider()
 
+                Toggle(isOn: $coordinator.showExpertDetails) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Expert Mode")
+                            .font(.body.weight(.medium))
+                        Text("Display technical details including Microsoft product IDs, build revisions, architecture mappings, and direct endpoints.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .toggleStyle(.checkbox)
+
+                Divider()
+
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 6) {
                         Image(systemName: "checkmark.shield.fill")
@@ -65,6 +78,6 @@ public struct WindowsDownloaderOptionsSheet: View {
             Spacer()
         }
         .padding(20)
-        .frame(width: 440, height: 320)
+        .frame(width: 450, height: 390)
     }
 }

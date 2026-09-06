@@ -29,7 +29,7 @@ public struct WindowsDownloaderSelectionView: View {
                         Text(coordinator.selectedProduct.name)
                             .font(.subheadline.weight(.semibold))
                             .lineLimit(1)
-                        Text("\(coordinator.selectedArchitecture.shortName) • \(coordinator.selectedLanguage.displayName)")
+                        Text("\(coordinator.selectedArchitecture.shortName) • \(coordinator.selectedLanguage.displayName)" + (coordinator.showExpertDetails ? " • ID: \(coordinator.effectiveSelectedProduct.id)" : ""))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -94,10 +94,10 @@ public struct WindowsDownloaderSelectionView: View {
                     Spacer()
                 }
 
-                // Row 1: Two dropdowns next to each other (Windows Version & Edition)
+                // Row 1: Two dropdowns next to each other (Version & Edition)
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Label("Windows Version", systemImage: "window.badge.magnifyingglass")
+                        Label("Version", systemImage: "window.badge.magnifyingglass")
                             .font(.caption.weight(.medium))
                             .foregroundStyle(.secondary)
 
@@ -117,7 +117,7 @@ public struct WindowsDownloaderSelectionView: View {
 
                         Picker("", selection: $coordinator.selectedProduct) {
                             ForEach(coordinator.availableEditions) { prod in
-                                Text(prod.editionName).tag(prod)
+                                Text(coordinator.showExpertDetails ? "\(prod.editionName) [ID: \(prod.id)]" : prod.editionName).tag(prod)
                             }
                         }
                         .labelsHidden()
@@ -136,7 +136,7 @@ public struct WindowsDownloaderSelectionView: View {
 
                         Picker("", selection: $coordinator.selectedArchitecture) {
                             ForEach(coordinator.availableArchitectures) { arch in
-                                Text(arch.displayName).tag(arch)
+                                Text(arch.displayName(expertMode: coordinator.showExpertDetails)).tag(arch)
                             }
                         }
                         .labelsHidden()
@@ -156,7 +156,7 @@ public struct WindowsDownloaderSelectionView: View {
 
                         Picker("", selection: $coordinator.selectedLanguage) {
                             ForEach(coordinator.availableLanguages) { lang in
-                                Text(lang.displayName).tag(lang)
+                                Text(coordinator.showExpertDetails && !lang.id.isEmpty ? "\(lang.displayName) [SKU: \(lang.id)]" : lang.displayName).tag(lang)
                             }
                         }
                         .labelsHidden()
@@ -179,6 +179,15 @@ public struct WindowsDownloaderSelectionView: View {
                     Text("Download Information")
                         .font(.subheadline.weight(.semibold))
                     Spacer()
+                    if coordinator.showExpertDetails {
+                        Text("EXPERT")
+                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .foregroundStyle(.orange)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.orange.opacity(0.15))
+                            .clipShape(Capsule())
+                    }
                 }
 
                 Divider()
@@ -207,7 +216,7 @@ public struct WindowsDownloaderSelectionView: View {
 
                 // Info 3: Architecture
                 infoRow(icon: "cpu.fill", iconColor: .indigo, label: "Architecture") {
-                    Text(coordinator.selectedArchitecture.displayName)
+                    Text(coordinator.selectedArchitecture.displayName(expertMode: coordinator.showExpertDetails))
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                 }
@@ -223,6 +232,50 @@ public struct WindowsDownloaderSelectionView: View {
                         if coordinator.isLoadingLanguages {
                             ProgressView()
                                 .controlSize(.mini)
+                        }
+                    }
+                }
+
+                if coordinator.showExpertDetails {
+                    let effectiveProduct = coordinator.effectiveSelectedProduct
+
+                    Divider()
+
+                    infoRow(icon: "number.square.fill", iconColor: .orange, label: "Product ID") {
+                        HStack(spacing: 6) {
+                            Text(effectiveProduct.id)
+                                .font(.system(.subheadline, design: .monospaced).weight(.semibold))
+                            if let armID = coordinator.selectedProduct.arm64EquivalentID {
+                                Text(coordinator.selectedArchitecture == .arm64 ? "(ARM64 variant of \(coordinator.selectedProduct.id))" : "(ARM64 ID: \(armID))")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+
+                    Divider()
+
+                    infoRow(icon: "shippingbox.fill", iconColor: .indigo, label: "Channel") {
+                        Text(effectiveProduct.channelDescription)
+                            .font(.subheadline)
+                            .foregroundStyle(.primary)
+                    }
+
+                    Divider()
+
+                    infoRow(icon: "server.rack", iconColor: .blue, label: "CDN Source") {
+                        Text(effectiveProduct.isEvaluation ? "Microsoft Direct Azure DB CDN" : "Microsoft Official Catalog API")
+                            .font(.subheadline)
+                            .foregroundStyle(.primary)
+                    }
+
+                    if !effectiveProduct.relatedIDs.isEmpty {
+                        Divider()
+
+                        infoRow(icon: "point.3.filled.connected.trianglepath.dotted", iconColor: .purple, label: "Related IDs") {
+                            Text(effectiveProduct.relatedIDs.joined(separator: ", "))
+                                .font(.system(.caption, design: .monospaced))
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }

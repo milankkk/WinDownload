@@ -10,9 +10,20 @@ public enum WindowsArchitecture: String, CaseIterable, Identifiable, Codable {
     public var displayName: String {
         switch self {
         case .x64: return "64-bit (x64)"
-        case .arm64: return "ARM64 (Apple Silicon / Qualcomm)"
+        case .arm64: return "ARM64"
         case .x86: return "32-bit (x86)"
         }
+    }
+
+    public func displayName(expertMode: Bool) -> String {
+        if expertMode {
+            switch self {
+            case .x64: return "64-bit (x64) [AMD64]"
+            case .arm64: return "ARM64 [AArch64]"
+            case .x86: return "32-bit (x86) [IA-32]"
+            }
+        }
+        return displayName
     }
 
     public var shortName: String {

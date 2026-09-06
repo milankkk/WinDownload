@@ -40,6 +40,7 @@ public struct WindowsProduct: Identifiable, Hashable, Codable {
     public let badge: WindowsBadge
     public let architectures: [WindowsArchitecture]
     public let arm64EquivalentID: String?
+    public let isSecondaryArchitectureVariant: Bool
     public let isEvaluation: Bool
     public let directISOURL: String?
     public let evalURL: String?
@@ -54,6 +55,7 @@ public struct WindowsProduct: Identifiable, Hashable, Codable {
         badge: WindowsBadge,
         architectures: [WindowsArchitecture],
         arm64EquivalentID: String? = nil,
+        isSecondaryArchitectureVariant: Bool = false,
         isEvaluation: Bool = false,
         directISOURL: String? = nil,
         evalURL: String? = nil,
@@ -67,6 +69,7 @@ public struct WindowsProduct: Identifiable, Hashable, Codable {
         self.badge = badge
         self.architectures = architectures
         self.arm64EquivalentID = arm64EquivalentID
+        self.isSecondaryArchitectureVariant = isSecondaryArchitectureVariant
         self.isEvaluation = isEvaluation
         self.directISOURL = directISOURL
         self.evalURL = evalURL
@@ -75,6 +78,24 @@ public struct WindowsProduct: Identifiable, Hashable, Codable {
 
     public var displayName: String {
         name
+    }
+
+    public var channelDescription: String {
+        if isEvaluation {
+            if badge == .ltsc {
+                return "Enterprise LTSC (Evaluation)"
+            } else if category == .windowsServer {
+                return "Windows Server (Evaluation)"
+            }
+            return "Enterprise (Evaluation)"
+        }
+        if badge == .latest {
+            return "Windows Insider Preview"
+        }
+        if badge == .legacy || badge == .eol {
+            return "Legacy Retail"
+        }
+        return "Retail (Consumer & Business)"
     }
 }
 

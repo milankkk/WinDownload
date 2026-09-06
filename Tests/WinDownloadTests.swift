@@ -120,4 +120,60 @@ final class WinDownloadTests: XCTestCase {
         XCTAssertTrue(option.uri.contains(".iso"))
         XCTAssertEqual(option.architecture, .x64)
     }
+
+    func testNewProductsAndArchitectureResolution() {
+        let catalog = WindowsCatalog.shared
+
+        // Test China 24H2 variants
+        let homeChina24 = catalog.findProduct(id: "3114")
+        XCTAssertNotNil(homeChina24)
+        XCTAssertEqual(homeChina24?.arm64EquivalentID, "3132")
+        let homeChina24ARM = catalog.resolveProduct(for: homeChina24!, architecture: .arm64)
+        XCTAssertEqual(homeChina24ARM.id, "3132")
+
+        let proChina24 = catalog.findProduct(id: "3115")
+        XCTAssertNotNil(proChina24)
+        XCTAssertEqual(proChina24?.arm64EquivalentID, "3133")
+        let proChina24ARM = catalog.resolveProduct(for: proChina24!, architecture: .arm64)
+        XCTAssertEqual(proChina24ARM.id, "3133")
+
+        // Test Preview 25H2 ARM64 pairing
+        let preview25 = catalog.findProduct(id: "3262")
+        XCTAssertNotNil(preview25)
+        XCTAssertEqual(preview25?.arm64EquivalentID, "3265")
+        let preview25ARM = catalog.resolveProduct(for: preview25!, architecture: .arm64)
+        XCTAssertEqual(preview25ARM.id, "3265")
+
+        // Test 25H2 Refresh variants
+        let refresh25 = catalog.findProduct(id: "3321")
+        XCTAssertNotNil(refresh25)
+        XCTAssertEqual(refresh25?.arm64EquivalentID, "3324")
+        let refresh25ARM = catalog.resolveProduct(for: refresh25!, architecture: .arm64)
+        XCTAssertEqual(refresh25ARM.id, "3324")
+
+        // Test that secondary ARM64 variants are filtered from primary editions list
+        let win11Editions = catalog.editions(for: .windows11)
+        XCTAssertFalse(win11Editions.contains(where: { $0.id == "3131" }))
+        XCTAssertFalse(win11Editions.contains(where: { $0.id == "3132" }))
+        XCTAssertFalse(win11Editions.contains(where: { $0.id == "3133" }))
+        XCTAssertFalse(win11Editions.contains(where: { $0.id == "3265" }))
+        XCTAssertFalse(win11Editions.contains(where: { $0.id == "3324" }))
+
+        // But primary editions ARE in the editions list
+        XCTAssertTrue(win11Editions.contains(where: { $0.id == "3113" }))
+        XCTAssertTrue(win11Editions.contains(where: { $0.id == "3114" }))
+        XCTAssertTrue(win11Editions.contains(where: { $0.id == "3115" }))
+        XCTAssertTrue(win11Editions.contains(where: { $0.id == "3262" }))
+        XCTAssertTrue(win11Editions.contains(where: { $0.id == "3321" }))
+    }
+
+    func testArchitectureDisplayModes() {
+        XCTAssertEqual(WindowsArchitecture.arm64.displayName, "ARM64")
+        XCTAssertEqual(WindowsArchitecture.x64.displayName, "64-bit (x64)")
+        XCTAssertEqual(WindowsArchitecture.x86.displayName, "32-bit (x86)")
+
+        XCTAssertTrue(WindowsArchitecture.arm64.displayName(expertMode: true).contains("AArch64"))
+        XCTAssertTrue(WindowsArchitecture.x64.displayName(expertMode: true).contains("AMD64"))
+        XCTAssertTrue(WindowsArchitecture.x86.displayName(expertMode: true).contains("IA-32"))
+    }
 }

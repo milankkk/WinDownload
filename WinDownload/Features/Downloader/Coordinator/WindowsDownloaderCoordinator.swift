@@ -26,7 +26,13 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
     }
     @Published public var availableLanguages: [WindowsLanguage] = []
     @Published public var selectedLanguage: WindowsLanguage = .fallbackEnglish
-    @Published public var selectedArchitecture: WindowsArchitecture = .x64
+    @Published public var selectedArchitecture: WindowsArchitecture = .x64 {
+        didSet {
+            if oldValue != selectedArchitecture {
+                loadLanguagesForSelectedProduct()
+            }
+        }
+    }
     @Published public var isLoadingLanguages: Bool = false
     @Published public var languageError: String? = nil
 
@@ -36,6 +42,10 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
 
     public var availableArchitectures: [WindowsArchitecture] {
         selectedProduct.architectures
+    }
+
+    public var effectiveSelectedProduct: WindowsProduct {
+        WindowsCatalog.shared.resolveProduct(for: selectedProduct, architecture: selectedArchitecture)
     }
 
     // Destination Directory & Space
@@ -52,6 +62,11 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
     // Options
     @Published public var autoVerifyChecksum: Bool = true
     @Published public var enableNotifications: Bool = true
+    @Published public var showExpertDetails: Bool = UserDefaults.standard.bool(forKey: "showExpertDetails") {
+        didSet {
+            UserDefaults.standard.set(showExpertDetails, forKey: "showExpertDetails")
+        }
+    }
 
     public let downloadEngine = WindowsDownloadEngine()
     private var cancellables = Set<AnyCancellable>()
@@ -113,9 +128,11 @@ public final class WindowsDownloaderCoordinator: ObservableObject {
         languageError = nil
         updateArchitectureForSelectedProduct()
 
+        let effectiveProduct = WindowsCatalog.shared.resolveProduct(for: selectedProduct, architecture: selectedArchitecture)
+
         Task {
             do {
-                let langs = try await WindowsISOResolver.shared.resolveLanguages(for: selectedProduct)
+                let langs = try await WindowsISOResolver.shared.resolveLanguages(for: effectiveProduct)
                 self.availableLanguages = langs
 
                 // Preserve English if available
